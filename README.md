@@ -6,6 +6,8 @@
 
 # KModuleSDK 使用文档
 
+![hardware.png](pic/hardware.png)
+
 ## 1. 概述
 
 KModuleSDK是硬件SDK的对外核心类，开发者仅需调用此类的API即可完成所有硬件操作。该SDK主要提供以下功能：

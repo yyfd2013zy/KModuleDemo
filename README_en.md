@@ -6,6 +6,8 @@
 
 # KModuleSDK User Documentation
 
+![hardware.png](pic/hardware.png)
+
 ## 1. Overview
 
 KModuleSDK is the core external class of the hardware SDK. Developers only need to call the APIs of this class to complete all hardware operations. This SDK mainly provides the following functions:
