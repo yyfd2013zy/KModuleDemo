@@ -20,6 +20,11 @@ KModuleSDK是硬件SDK的对外核心类，开发者仅需调用此类的API即�
 
 ## 2. 快速开始
 
+依赖KModuleSDK库 [card_k_module-1.2.6.4.aar](app/libs/card_k_module-1.2.6.4.aar)到你的项目中
+```gradle
+ implementation files('libs\\card_k_module-1.2.6.4.aar')
+```
+
 ### 2.1 初始化SDK
 
 ```java

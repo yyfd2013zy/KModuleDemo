@@ -20,6 +20,11 @@ KModuleSDK is the core external class of the hardware SDK. Developers only need 
 
 ## 2. Quick Start
 
+Add [card_k_module-1.2.6.4.aar](app/libs/card_k_module-1.2.6.4.aar) to your project
+```gradle
+ implementation files('libs\\card_k_module-1.2.6.4.aar')
+```
+
 ### 2.1 Initialize SDK
 
 ```java
