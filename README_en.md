@@ -1,3 +1,9 @@
+<div align="right">
+  <a href="./README.md" target="_blank">
+    <img src="https://img.shields.io/badge/中文-说明文档-green" alt="Chinese README">
+  </a>
+</div>
+
 # KModuleSDK User Documentation
 
 ## 1. Overview
