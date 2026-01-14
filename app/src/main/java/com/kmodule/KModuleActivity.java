@@ -18,7 +18,9 @@ import com.kade.module.KModuleSDK;
 import com.kade.module.base.HardwareConfig;
 import com.kade.module.base.error.SerialPortOpenFailedException;
 import com.kade.module.base.listener.KModuleManagerListener;
+import com.kade.module.util.MyFunc;
 import com.kmodule.demo.R;
+import com.yishengkj.testtools.utils.ComBean;
 
 import java.util.Locale;
 
@@ -35,15 +37,14 @@ public class KModuleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_k_module);
         sv_console = findViewById(R.id.sv_console);
         ll_console = findViewById(R.id.ll_console);
-        initSdk();
     }
 
     private void initSdk() {
         KModuleManagerListener kModuleManagerListener = new KModuleManagerListener() {
             @Override
-            public void onSerialDataRead(String sPort, byte[] buffer, int size) {
-                Log.i(TAG, "onSerialDataRead: " + new String(buffer, 0, size));
-                addConsoleLog(new String(buffer, 0, size));
+            public void onSerialDataRead(String sPort, ComBean comBean) {
+                Log.i(TAG, "onSerialDataRead:" + MyFunc.ByteArrToHex(comBean.bRec));
+                addConsoleLog(MyFunc.ByteArrToHex(comBean.bRec));
             }
         };
         HardwareConfig config = new HardwareConfig.Builder("/dev/ttyS3", 9600)
@@ -53,9 +54,10 @@ public class KModuleActivity extends AppCompatActivity {
                 .build();
         try {
             KModuleSDK.init(config);
+            addConsoleLog("init success");
         } catch (SerialPortOpenFailedException e) {
-            Log.e(TAG, "init fai;ed：" + e.getMessage());
-            addConsoleLog("init fai;ed：" + e.getMessage());
+            Log.e(TAG, "init faield：" + e.getMessage());
+            addConsoleLog("init failed：" + e.getMessage());
         }
     }
 
@@ -68,6 +70,9 @@ public class KModuleActivity extends AppCompatActivity {
             ll_console.addView(textView);
             sv_console.fullScroll(ScrollView.FOCUS_DOWN);
         });
+    }
+    public void onClickInitSDK(View view) {
+        initSdk();
     }
 
     //Set the red LED to steady on.
@@ -344,4 +349,6 @@ public class KModuleActivity extends AppCompatActivity {
             KModuleSDK.getInstance().destroy();
         }
     }
+
+
 }

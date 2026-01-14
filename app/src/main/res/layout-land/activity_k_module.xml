@@ -68,7 +68,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:onClick="onClickLEDBlueOn"
+                    android:onClick="onClickInitSDK"
                     android:textColor="@android:color/white"
                     android:background="@android:color/holo_green_dark"
                     android:text="INIT"/>
