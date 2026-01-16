@@ -31,23 +31,35 @@ public class KModuleActivity extends AppCompatActivity {
     private ScrollView sv_console;
     private LinearLayout ll_console;
 
+    private String sPort = "/dev/ttyS3";
+
+    private TextView tv_port;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_k_module);
         sv_console = findViewById(R.id.sv_console);
         ll_console = findViewById(R.id.ll_console);
+        tv_port = findViewById(R.id.tv_port);
+        tv_port.setText(sPort);
     }
 
     private void initSdk() {
         KModuleManagerListener kModuleManagerListener = new KModuleManagerListener() {
             @Override
+            public void onSerialDataWrite(String sPort, ComBean comBean) {
+                Log.i(TAG, "onSerialDataSend:" + MyFunc.ByteArrToHex(comBean.bRec));
+                addConsoleLog("Send: " + MyFunc.ByteArrToHex(comBean.bRec));
+            }
+
+            @Override
             public void onSerialDataRead(String sPort, ComBean comBean) {
                 Log.i(TAG, "onSerialDataRead:" + MyFunc.ByteArrToHex(comBean.bRec));
-                addConsoleLog(MyFunc.ByteArrToHex(comBean.bRec));
+                addConsoleLog("Receive: " + MyFunc.ByteArrToHex(comBean.bRec));
             }
         };
-        HardwareConfig config = new HardwareConfig.Builder("/dev/ttyS3", 9600)
+        HardwareConfig config = new HardwareConfig.Builder(sPort, 9600)
                 .readTimeoutMs(5000)
                 .isDebug(true)
                 .kModuleManagerListener(kModuleManagerListener)
@@ -56,7 +68,7 @@ public class KModuleActivity extends AppCompatActivity {
             KModuleSDK.init(config);
             addConsoleLog("init success");
         } catch (SerialPortOpenFailedException e) {
-            Log.e(TAG, "init faield：" + e.getMessage());
+            Log.e(TAG, "init failed：" + e.getMessage());
             addConsoleLog("init failed：" + e.getMessage());
         }
     }
@@ -65,12 +77,29 @@ public class KModuleActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             String time = android.text.format.DateFormat.format("yyyy-MM-dd HH:mm:ss", System.currentTimeMillis()).toString();
             TextView textView = new TextView(this);
-            textView.setText(time + "          " + s);
+            textView.setText(time + "  " + s);
             textView.setTextColor(Color.GREEN);
             ll_console.addView(textView);
             sv_console.fullScroll(ScrollView.FOCUS_DOWN);
         });
     }
+
+    public void onClickSelectPort(View view) {
+        //弹出选择串口对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Port");
+        final String[] ports = {"/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyS4", "/dev/ttyS5", "/dev/ttyS6", "/dev/ttyS7"};
+        builder.setItems(ports, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sPort = ports[which];
+                tv_port.setText(sPort);
+                addConsoleLog("Selected Port：" + sPort);
+            }
+        });
+        builder.show();
+    }
+
     public void onClickInitSDK(View view) {
         initSdk();
     }
@@ -78,56 +107,96 @@ public class KModuleActivity extends AppCompatActivity {
     //Set the red LED to steady on.
     //LED 灯红色常亮
     public void onClickLEDRedOn(View view) {
-        KModuleSDK.getInstance().ledRedOn();
+        try {
+            KModuleSDK.getInstance().ledRedOn();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Set the green LED to steady on.
     //LED 灯绿色常亮
     public void onClickLEDGreenOn(View view) {
-        KModuleSDK.getInstance().ledGreenOn();
+        try {
+            KModuleSDK.getInstance().ledGreenOn();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Set the blue LED to steady on.
     //LED 灯蓝色常亮
     public void onClickLEDBlueOn(View view) {
-        KModuleSDK.getInstance().ledBlueOn();
+        try {
+            KModuleSDK.getInstance().ledBlueOn();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Turn on the relay.
     //继电器打开
     public void onClickRelayOn(View view) {
-        KModuleSDK.getInstance().relayOn();
+        try {
+            KModuleSDK.getInstance().relayOn();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Turn off the relay.
     //继电器关闭
     public void onClickRelayOff(View view) {
-        KModuleSDK.getInstance().relayOff();
+        try {
+            KModuleSDK.getInstance().relayOff();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
 
     //Set the red LED to blink.
     //设置红色LED闪烁
     public void onClickLEDRedBlink(View view) {
-        KModuleSDK.getInstance().ledRedBlink();
+        try {
+            KModuleSDK.getInstance().ledRedBlink();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Set the green LED to blink.
     //设置绿色LED闪烁
     public void onClickLEDGreenBlink(View view) {
-        KModuleSDK.getInstance().ledGreenBlink();
+        try {
+            KModuleSDK.getInstance().ledGreenBlink();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Set the blue LED to blink.
     //设置蓝色LED闪烁
     public void onClickLEDBlueBlink(View view) {
-        KModuleSDK.getInstance().ledBlueBlink();
+        try {
+            KModuleSDK.getInstance().ledBlueBlink();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Turn off all LEDs.
     //关闭所有LED灯
     public void onClickLEDOff(View view) {
-        KModuleSDK.getInstance().ledOff();
+        try {
+            KModuleSDK.getInstance().ledOff();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Set custom color for LED to steady on.
@@ -144,9 +213,20 @@ public class KModuleActivity extends AppCompatActivity {
                 .show(view, new ColorPickerPopup.ColorPickerObserver() {
                     @Override
                     public void onColorPicked(int color) {
-                        String hex= colorHex(color);
-                        String colorHEx = hex.substring(4,hex.length());
-                        KModuleSDK.getInstance().ledCustomColorAndOn(colorHEx);
+                        String hex = colorHex(color);
+                        String colorHEx = hex.substring(4, hex.length());
+
+                        try {
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "onClickLEDRedOn: " + e.getMessage());
+                            addConsoleLog("onClickLEDRedOn: " + e.getMessage());
+                        }
+                        try {
+                            KModuleSDK.getInstance().ledCustomColorAndOn(colorHEx);
+                        } catch (Exception e) {
+                            addConsoleLog(e.getMessage());
+                        }
                         view.setBackgroundColor(color);
                     }
                 });
@@ -166,9 +246,20 @@ public class KModuleActivity extends AppCompatActivity {
                 .show(view, new ColorPickerPopup.ColorPickerObserver() {
                     @Override
                     public void onColorPicked(int color) {
-                        String hex= colorHex(color);
-                        String colorHEx = hex.substring(4,hex.length());
-                        KModuleSDK.getInstance().ledCustomColorBlink(colorHEx);
+                        String hex = colorHex(color);
+                        String colorHEx = hex.substring(4, hex.length());
+
+                        try {
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "onClickLEDRedOn: " + e.getMessage());
+                            addConsoleLog("onClickLEDRedOn: " + e.getMessage());
+                        }
+                        try {
+                            KModuleSDK.getInstance().ledCustomColorBlink(colorHEx);
+                        } catch (Exception e) {
+                            addConsoleLog(e.getMessage());
+                        }
                         view.setBackgroundColor(color);
                     }
                 });
@@ -211,10 +302,12 @@ public class KModuleActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
         // 对话框确认按钮
@@ -222,7 +315,12 @@ public class KModuleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int currentBrightness = seekBar.getProgress() + minBrightness;
-                KModuleSDK.getInstance().ledBrightness(currentBrightness);
+                try {
+                    KModuleSDK.getInstance().ledBrightness(currentBrightness);
+                } catch (Exception e) {
+                    addConsoleLog(e.getMessage());
+                }
+
                 dialog.dismiss();
             }
         });
@@ -241,25 +339,44 @@ public class KModuleActivity extends AppCompatActivity {
     //Set LED to full brightness.
     //设置LED最大亮度
     public void onClickLEDSetFullBrightness(View view) {
-        KModuleSDK.getInstance().ledFullBrightness();
+        try {
+            KModuleSDK.getInstance().ledFullBrightness();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Turn on the beeper.
     //蜂鸣器开启
     public void onClickBeepOn(View view) {
-        KModuleSDK.getInstance().beepOn();
+        try {
+            KModuleSDK.getInstance().beepOn();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Turn off the beeper.
     //蜂鸣器关闭
     public void onClickBeepOff(View view) {
-        KModuleSDK.getInstance().beepOff();
+        try {
+            KModuleSDK.getInstance().beepOff();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Set LED marquee effect.
     //设置LED流水灯效果
     public void onClickLEDMarquee(View view) {
-        KModuleSDK.getInstance().ledMarquee();
+        try {
+            KModuleSDK.getInstance().ledMarquee();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Set Relay Open Time
@@ -282,7 +399,12 @@ public class KModuleActivity extends AppCompatActivity {
                 try {
                     int time = Integer.parseInt(timeStr);
                     addConsoleLog("Set Open Time：" + time + "s");
-                    KModuleSDK.getInstance().setOpenTime(time);
+                    try {
+                        KModuleSDK.getInstance().setOpenTime(time);
+                    } catch (Exception e) {
+                        addConsoleLog(e.getMessage());
+                    }
+
                 } catch (NumberFormatException e) {
                     addConsoleLog("Invalid input, please enter a number");
                 }
@@ -301,38 +423,76 @@ public class KModuleActivity extends AppCompatActivity {
     //Remote control to open.
     //远程控制打开
     public void onClickRemoteOpen(View view) {
-        KModuleSDK.getInstance().remoteOpen();
+        try {
+            KModuleSDK.getInstance().remoteOpen();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Send super admin card command.
     //发送超级管理员卡命令
     public void onClickSendAdminCard(View view) {
-        KModuleSDK.getInstance().sendSuperAdminCard();
+        try {
+            KModuleSDK.getInstance().sendSuperAdminCard("");
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Change Wiegand output format.
     //更改韦根输出格式
     public void onClickChangeWiegandOutput(View view) {
-        KModuleSDK.getInstance().virtualWeighing();
+        try {
+            KModuleSDK.getInstance().virtualWeighing();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Set card number output to decimal format.
     //设置卡号输出为十进制格式
     public void onClickCardNumberOutputDec(View view) {
-        KModuleSDK.getInstance().cardNumberOutputToggleEec();
+        try {
+            KModuleSDK.getInstance().cardNumberOutputToggleEec();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+
     }
 
     //Set card number output to hexadecimal format.
     //设置卡号输出为十六进制格式
     public void onClickCardNumberOutputHex(View view) {
-        KModuleSDK.getInstance().cardNumberOutputToggleHex();
+        try {
+            KModuleSDK.getInstance().cardNumberOutputToggleHex();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
 
     //Set card number output to reverse decimal format.
     //设置卡号输出为反向十进制格式
     public void onClickCardNumberOutputDecReverse(View view) {
-        KModuleSDK.getInstance().cardNumberOutputToggleDecReverse();
+        try {
+            KModuleSDK.getInstance().cardNumberOutputToggleDecReverse();
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
     }
+
+    //Send serial port data.
+    //发送串口数据
+    public void onClickSendSerialPort(View view) {
+        try {
+            KModuleSDK.getInstance().sendSerialData(new byte[]{0x01});
+        } catch (Exception e) {
+            addConsoleLog(e.getMessage());
+        }
+    }
+
 
     private String colorHex(int color) {
         int a = Color.alpha(color);
@@ -349,6 +509,5 @@ public class KModuleActivity extends AppCompatActivity {
             KModuleSDK.getInstance().destroy();
         }
     }
-
 
 }

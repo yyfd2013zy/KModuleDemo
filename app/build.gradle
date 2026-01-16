@@ -18,8 +18,8 @@ android {
         minSdkVersion 19
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 28
-        versionCode 6
-        versionName "3.6"
+        versionCode 1
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
@@ -35,7 +35,7 @@ android {
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     // 输出apk名称为WeiLaiCheng1.0_2018-08-13.apk
-                    def fileName = "模块测试${defaultConfig.versionName}.apk"
+                    def fileName = "KModuleDemo${defaultConfig.versionName}.apk"
                     outputFileName = fileName
                 }
             }

@@ -15,7 +15,7 @@ KModuleSDK是硬件SDK的对外核心类，开发者仅需调用此类的API即�
 | 功能分类 | 描述 |
 |---------|------|
 | 读卡功能 | 支持读取卡片信息 |
-| 继电器控制 | 支持继电器的开关操作 |
+| 继电器控制 | 支持继电器的开关[KModuleActivity.java](app/src/main/java/com/kmodule/KModuleActivity.java)操作 |
 | LED灯控制 | 支持LED灯的颜色、闪烁模式和亮度调节 |
 
 ## 2. 快速开始
